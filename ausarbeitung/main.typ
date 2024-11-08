@@ -1,5 +1,6 @@
 #import "@preview/ilm:1.2.1": *
 
+#import "@preview/big-todo:0.2.0": todo
 #import "@preview/wordometer:0.1.3": word-count, total-characters, 
 
 #show: word-count
@@ -77,7 +78,7 @@ Entweder ich lese die kompletten PDFs ein, splitte den Inhalt in zusammenhängen
 Alternativ würde ich nur die Titel und Abstracts verwenden und mit dem auf wissenschaftliche Texte optimierten Embedding-Modell #link("https://huggingface.co/sentence-transformers/allenai-specter")[SPECTER] in Vektoren umwandeln.
 */
 
-= Grundlagen
+= Grundlagen <grundlagen>
 
 Beinahe jeder Überbegriff für Computersysteme -- Informatik, Informationstechnologie (IT) oder Elektronische Datenverarbeitung (EDV) -- beinhaltet einen Hinweis auf Informationen oder Daten. In der modernen Welt gibt es bereits Sprichwörter wie "Daten sind das neue Öl", die von Publikationen des Fraunhofer IML aufgegriffen werden @moller_bedeutung_2017.
 
@@ -112,7 +113,7 @@ Ein perfekter Chatbot mit optimaler RAG für die Textgenerierung würde viele fa
 
 Damit ergibt sich für den gesamten Datenfluss zum Einlesen von PDFs in die Vektordatenbank der in @rag-flow_import dargestellte Ablauf: Zunächst werden die PDF-Dateien, die manuell von arXiv heruntergeladen wurden, von einem Python-Skript eingelesen und Titel und Abstract der PDFs werden extrahiert. Das Embedding-Modell SPECTER bestimmt anhand von Titel und Abstract dann einen Vektor, der mit dem Titel und dem Abstract in der Vektordatenbank gespeichert wird. Um die Datenbankbelastung gering zu halten, wird das pdf-Dokument selbst in einem separaten Verzeichnis gespeichert und nur der relative Pfad in diesem Verzeichnis wird in der Datenbank abgelegt. Durch die Speicherung von Titel und Abstract in der Datenbank kann so auch bei einem Verlust des Dokumentenverzeichnisses das entsprechende Dokument im Internet recherchiert werden.
 
-// TODO: Hier geht es weiter mit der Abfrage: Abfrage -> SPECTER -> Ähnlichkeitssuche in DB -> Ergebnisse ausgeben
+#todo[Hier geht es weiter mit der Abfrage: Abfrage -> SPECTER -> Ähnlichkeitssuche in DB -> Ergebnisse ausgeben]
 
 = Installation
 
@@ -160,11 +161,30 @@ Um die Erweiterung `pgvector` in dem in @dev-container-setup beschriebenen Conta
 CREATE EXTENSION vector;
 ```, placement: none, caption: [Aktivierung der `pgvector`-Erweiterung für PostgreSQL]) <create-extension-pgvector>
 
-Falls das genannte Docker-Image nicht verwendet wird, muss die Erweiterung ggf. erst installiert werden. Details hierzu bietet die #link("https://github.com/pgvector/pgvector")[Dokumentation von pgvector].
+Falls das genannte Docker-Image nicht verwendet wird, muss die Erweiterung ggf. erst installiert werden. Details zu diesem Installationsprozess würden den Rahmen dieser Ausarbeitung sprengen und können in der #link("https://github.com/pgvector/pgvector")[Dokumentation von pgvector] nachgelesen werden.
 
 = Umsetzung Beispiel
 
+Nach Abschluss der Installation kann mit der Arbeit am eigentlichen Programmentwurf begonnen werden. Für die erfolgreiche Umsetzung sind vier Schritte zu erledigen: Zunächst muss ein Datenset mit den zu speichernden PDF-Dateien erstellt werden, danach muss aus jedem dieser Dokumenten der Titel und das Abstract extrahiert und gespeichert werden. Im dritten Schritt durchlaufen die so vorbereiteten Daten den RAG-Import-Flow aus @grundlagen (@rag-flow_import) und werden in der Datenbank gespeichert. Im letzten Abschnitt wird die Suche nach Dokumenten realisiert.
+
+== Erstellung des Datensets
+
+Um die Datengrundlage für das Einlesen der Dokumente in die Datenbank zu bewerkstelligen, wurden 51 Preprints im PDF-Format von arXiv heruntergeladen. Da diese im Git-Repository hinterlegt werden, wurde darauf geachtet, dass die Größe eines Artikels 3.5 MB nicht überschreitet -- auch um den PDF-Parser von Python nicht zu überlasten. In einem produktiven Einsatz der Anwendung sollte es problemlos möglich sein, auch größere PDFs zu verarbeiten. Darüber hinaus wurden Preprints aus verschiedenen Kategorien (hauptsächlich Informatik, Astrophysik, Elektrotechnik und Wirtschaft) heruntergeladen, die sich thematisch teilweise drastisch unterscheiden, teilweise aber auch überschneiden. Die Preprints wurden unkatalogisiert und unter ihrem Download-Dateinamen (z. B. `2405.00695v1.pdf`) im Verzeichnis `arxiv-pdfs` abgelegt.
+
+== Vorbereiten der Daten auf den Import
+
+Zum Vorbereiten der zuvor gespeicherten Daten auf das Embedding müssen Titel und Abstract der Artikel ermittelt werden. Die naheliegendste Vorgehensweise dafür ist das Extrahieren dieser aus den PDF-Dateien. Um Text aus PDFs auszulesen, bietet Python unter anderem die Packages PyMuPDF und PDFPlumber, die jeweils unterschiedliche Herangehensweisen an die Textextraktion haben. Um beide zu vergleichen, wurde ein von ChatGPT erstelltes Python-Skript verwendet, das ein Abbild der jeweils ersten Dokumentseite und deren erkannten Textinhalt für alle Artikel in einem PDF-Bericht ausgibt.
+
+In den Berichten erkennt man Probleme bei beiden Packages:
+- PyMuPDF kommt mit spaltenweisen Layouts generell gut zurecht, kann aber dafür Ligaturen, wie z. B. LaTeX sie einsetzt, nicht erkennen.
+- PDFPlumber erkennt Ligaturen, aber kann spaltenweise Layouts nicht verarbeiten. Auch vertikaler Text (die arXiv-Wasserzeichen) sind problematisch. Dem ausgegebenen Text fehlen häufig Leerzeichen.
+
+Neben diesen eher unvorteilhaften Ergebnissen bestehen noch weitere Probleme: Durch möglicherweise vorhandene Kopfzeilen und Zeilenumbrüche im Titel kann die genaue Position der Überschrift nicht ausreichend präzise bestimmt werden. Die Lokalisierung von Abstracts ist oft einfacher, weil sie häufig mit der Überschrift "Abstract" beginnen -- allerdings nicht zuverlässig. Zudem kann das Ende nicht exakt bestimmt werden, da die Folgekapitel keine einheitliche Benennung haben oder manchmal noch Stichworte für die Katalogisierung auf das Abstract folgen.
+
+== Import in die Vektordatenbank
+
+== Abrufen von Dokumentdaten aus der Vektordatenbank
 
 = Character Count
 
-In this document, there are #total-characters characters all up (w/o spaces). Therefore, there should be a maximum of 17 500 characters in this document (under the premise of an average word length of 8 chars)
+In this document, there are #total-characters characters all up (w/o spaces). Therefore, there should be a maximum of 17 500 characters in this document (under the premise of an average word length of 8 chars).
