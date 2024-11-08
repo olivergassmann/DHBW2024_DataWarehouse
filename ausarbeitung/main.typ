@@ -1,6 +1,42 @@
 #import "@preview/ilm:1.2.1": *
 
+#import "@preview/wordometer:0.1.3": word-count, total-characters, 
+
+#show: word-count
+
+#import "@preview/codly:1.0.0": *
+#show: codly-init.with()
+
+#codly(
+  languages: (
+    py: (
+      name: " Python",
+      icon: text(font: "tabler-icons", "\u{ed01}"),
+      color: rgb("#3572A5")
+    ),
+    sh: (
+      name: " Shell",
+      icon: text(font: "tabler-icons", "\u{eb0f}"),
+      color: rgb("#4EAA25")
+    ),
+    sql: (
+      name: " SQL",
+      icon: text(font: "tabler-icons", "\u{ea88}"),
+      color: rgb("#E38C00")
+    ),
+    yml: (
+      name: " Docker-Compose",
+      icon: text(font: "tabler-icons", "\u{edca}"),
+      color: rgb("#2496ED")
+    )
+  ),
+  stroke: none,
+  fill: color.gray.lighten(90%),
+)
+
+
 #set text(lang: "de")
+#set figure(placement: auto)
 
 #show: ilm.with(
   title: [RAG Data Engineering: PDF-Umwandlung],
@@ -14,9 +50,9 @@
     DHBW Stuttgart
   ],
   bibliography: bibliography("zotero.bib"),
-  figure-index: (enabled: true),
-  table-index: (enabled: true),
-  listing-index: (enabled: true),
+  figure-index: (enabled: true, title: "Abbildungsverzeichnis"),
+  table-index: (enabled: true, title: "Tabellenverzeichnis"),
+  listing-index: (enabled: true, title: "Quellcodeverzeichnis"),
   external-link-circle: true,
 )
 
@@ -45,7 +81,7 @@ Alternativ würde ich nur die Titel und Abstracts verwenden und mit dem auf wiss
 
 Beinahe jeder Überbegriff für Computersysteme -- Informatik, Informationstechnologie (IT) oder Elektronische Datenverarbeitung (EDV) -- beinhaltet einen Hinweis auf Informationen oder Daten. In der modernen Welt gibt es bereits Sprichwörter wie "Daten sind das neue Öl", die von Publikationen des Fraunhofer IML aufgegriffen werden @moller_bedeutung_2017.
 
-Doch Computersysteme können mit einem Haufen Daten allein nicht viel anfangen: Um sinnvoll eingesetzt zu werden, müssen die Daten in maschinenlesbarer Form, schnell zugänglich und gut strukturiert vorliegen. Bei den riesigen Datenmengen, die sekündlich anfallen, wird das zu einer großen Herausforderung, mit der sich das Feld des _Data Engineerings_ (dt. Daten-Ingenieurswesen oder besser Informationsmodellierung) befasst. Beim Data Engineering geht es generell darum, Herangehensweisen für den Umgang mit Daten zu erarbeiten. Dazu gehören die sinnvolle Auswahl von Daten ebenso wie ihre Erfassung bzw. Generierung, Speicherung, Aktualisierung und Nutzung @weber_data_2021[S.~IX]. Tolk @tolk_common_2003 definiert als die Grundlagen des Data Engineering vier Kernkompetenzen:
+Doch Computersysteme können mit einer Menge an Daten allein nicht viel anfangen: Um sinnvoll eingesetzt zu werden, müssen die Daten in maschinenlesbarer Form, schnell zugänglich und gut strukturiert vorliegen. Bei den riesigen Datenmengen, die sekündlich anfallen, wird das zu einer großen Herausforderung, mit der sich das Feld des _Data Engineerings_ (dt. Daten-Ingenieurswesen oder besser Informationsmodellierung) befasst. Beim Data Engineering geht es generell darum, Herangehensweisen für den Umgang mit Daten zu erarbeiten. Dazu gehören die sinnvolle Auswahl von Daten ebenso wie ihre Erfassung bzw. Generierung, Speicherung, Aktualisierung und Nutzung @weber_data_2021[S.~IX]. Tolk @tolk_common_2003 definiert als die Grundlagen des Data Engineering vier Kernkompetenzen:
 
 / Data Administration: Verwaltung des Informationsaustauschs zwischen Systemen und Definition von Standards sowie Dokumentation.
 / Data Management: Planung, Organisation und Verwaltung der Daten anhand von Regeln und Methoden.
@@ -72,12 +108,63 @@ Für beide Anwendungsfälle stehen Embedding-Modelle zur Verfügung, z. B. #link
 
 Ein perfekter Chatbot mit optimaler RAG für die Textgenerierung würde viele fachliche Argumente gegen die Verwendung von generativer KI in der Wissenschaft außer Kraft setzen, aber selbst dann würden noch immer moralische Gründe dafür sprechen, eigene Publikationen auch selbst zu schreiben und die Ideen selbst zu entwickeln @aylsworth_should_2024. Aus diesem Grund wird für diesen Programmentwurf die Unterstützung bei der Recherche durch Dokumentensuche als erstrebenswerteres Thema angesehen und SPECTER als Embeddingmodell für die RAG-Pipeline ausgewählt.
 
+#figure(image("diagrams/RAG-Flow.svg"), caption: "Embedding-Flow zum Einfügen von PDFs in die Vektordatenbank") <rag-flow_import>
+
+Damit ergibt sich für den gesamten Datenfluss zum Einlesen von PDFs in die Vektordatenbank der in @rag-flow_import dargestellte Ablauf: Zunächst werden die PDF-Dateien, die manuell von arXiv heruntergeladen wurden, von einem Python-Skript eingelesen und Titel und Abstract der PDFs werden extrahiert. Das Embedding-Modell SPECTER bestimmt anhand von Titel und Abstract dann einen Vektor, der mit dem Titel und dem Abstract in der Vektordatenbank gespeichert wird. Um die Datenbankbelastung gering zu halten, wird das pdf-Dokument selbst in einem separaten Verzeichnis gespeichert und nur der relative Pfad in diesem Verzeichnis wird in der Datenbank abgelegt. Durch die Speicherung von Titel und Abstract in der Datenbank kann so auch bei einem Verlust des Dokumentenverzeichnisses das entsprechende Dokument im Internet recherchiert werden.
+
+// TODO: Hier geht es weiter mit der Abfrage: Abfrage -> SPECTER -> Ähnlichkeitssuche in DB -> Ergebnisse ausgeben
 
 = Installation
 
+Für die Umsetzung des Programmentwurfs wird die Programmiersprache Python und das Datenbankmanagementsystem PostgreSQL mit der Erweiterung #link("https://github.com/pgvector/pgvector")[pgvector] verwendet.
 
+== Manuelle Python-Installation
+
+Da Python auf dem Mac bereits vorinstalliert ist, ist keine explizite Installation des Python-Interpreters nötig. Falls eine spezifische Version installiert werden soll, kann dies im Terminal z. B. über den Paketmanager #link("https://brew.sh")[Homebrew] erledigt werden, wie @brew-install-python zeigt.
+
+#figure(```sh
+$ brew install python@3.13
+```, caption: [Installation des Python-Interpreters in der Version 3.13 über `brew`], placement: none) <brew-install-python>
+
+== Einrichten des Dev-Containers mit PyCharm <dev-container-setup>
+
+Alternativ zur Verwendung von Python auf dem Entwicklungsrechner kann auch ein Development Container mit Docker aufgesetzt werden. Die Verwendung solcher Container stellt sicher, dass Projekte voneinander isoliert ausgeführt werden. Wenn auch PostgreSQL als Container ausgeführt wird, kann die Container-Engine auch das Routing zwischen den Containern übernehmen. Aus diesem Grund wird für diesen Programmentwurf ein vorgefertigtes Dev-Environment aus Docker-Containern mit Python und PostgreSQL verwendet, das sich in der IDE PyCharm einfach erstellen lässt -- vorausgesetzt, Docker (oder ein Drop-In-Replacement) ist installiert. Der Ablauf ist einfach:
+
+1. Nach dem Öffnen von PyCharm kann auf dem Welcome-Bildschirm links der Menüpunkt _Remote Development_ ausgewählt.
+2. Ein Klick auf _Create Dev Container_ öffnet das Setup-Menü. Dort kann ausgewählt werden, welche Container-Engine verwendet werden soll, mit welcher JetBrains-IDE gearbeitet wird und welches entfernte Git-Repository auf welchem Branch als Grundlage für den Code verwendet werden soll. Alternativ kann auch ein lokales Projekt angegeben werden.
+#figure(image("create_dev_container_config.png", width: 80%), caption: "Konfiguration des Dev-Containers") <create_dev_container_config>
+3. Mit dem Button _Build Container and Continue_ wird das Erstellen des Containers gestartet. Sofern das Projekt noch keinen `.devcontainer`-Ordner mit Konfigurationsdateien enthält, wird der Dialog in @create_dev_container_config geöffnet. Darin wird das Template für das Setup der für den Programmentwurf benötigten Umgebung mit Python und PostgreSQL auf `Python 3 & PostgreSQL` gesetzt, der Rest kann bei den Standardwerten belassen werden. 
+4. Nach der Bestätigung mit _OK_ wird die Containerumgebung aufgesetzt, Abhängigkeiten werden geladen und installiert. Die Entwicklungsumgebung wird nach dem Deployment entweder automatisch geöffnet oder kann im PyCharm-Willkommensbildschirm über _Remote Development #sym.arrow Dev Containers_ gestartet und geöffnet werden.
+5. Standardmäßig verwendet der Dev-Container allerdings das originale Postgres-Image aus dem Docker Hub. Dieses Image stellt allerdings die pgvector-Erweiterung nicht zur Verfügung, daher muss die Containerkonfiguration einmalig angepasst werden: In `.devcontainer/docker-compose.yml` muss das Image der PostgreSQL-Datenbank zu dem von pgvector bereitgestellten Image geändert werden. @change-postgres-image zeigt, welche Änderung vorgenommen werden muss.
+#codly(highlights: ((line: 1, start: 7, end: none, fill: green, tag: "statt postgres:latest"), ))
+#figure(```yml
+    db:
+      image: pgvector/pgvector:pg17  
+      restart: unless-stopped
+      volumes:
+        - postgres-data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_DB: postgres
+        POSTGRES_PASSWORD: postgres
+    ```, caption: "Relevanter Ausschnitt aus der docker-compose-Datei") <change-postgres-image>
+6. Nach dem Anpassen der Docker-Konfiguration muss der Dev-Container neu gebaut werden, damit das DB-Image ausgetauscht wird.
+
+Die Nutzung eines solchen Containers ist allerdings nicht notwendig, alternativ kann auch z.~B. in einem Virtual Environment entwickelt werden. Im Quellcode muss die Datenbankverbindung dann allerdings angepasst werden, um statt dem `db`-Container auf die stattdessen verwendete PostgreSQL-Instanz zu verweisen.
+
+== Installation der `pgvector`-Erweiterung in PostgreSQL
+
+Um die Erweiterung `pgvector` in dem in @dev-container-setup beschriebenen Container (Image `pgvector/pgvector`) zu aktivieren, genügt der SQL-Befehl in @create-extension-pgvector.
+
+#figure(```sql
+CREATE EXTENSION vector;
+```, placement: none, caption: [Aktivierung der `pgvector`-Erweiterung für PostgreSQL]) <create-extension-pgvector>
+
+Falls das genannte Docker-Image nicht verwendet wird, muss die Erweiterung ggf. erst installiert werden. Details hierzu bietet die #link("https://github.com/pgvector/pgvector")[Dokumentation von pgvector].
 
 = Umsetzung Beispiel
 
 
+= Character Count
 
+In this document, there are #total-characters characters all up (w/o spaces). Therefore, there should be a maximum of 17 500 characters in this document (under the premise of an average word length of 8 chars)
