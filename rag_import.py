@@ -2,6 +2,7 @@ import os
 import fitz
 from numpy import ndarray
 from sentence_transformers import SentenceTransformer
+import psycopg2
 
 document_titles = []
 documents = []
@@ -42,3 +43,39 @@ merged_results = [{"title": title[0], "embedding": embedding} for title, embeddi
 print('Merged document titles with embeddings:')
 for result in merged_results:
     print(result)
+
+print('Saving merged results (documents with embeddings) to database...')
+
+# Establish database connection
+connection = psycopg2.connect(
+    dbname="postgres",
+    user="postgres",
+    password="postgres",
+    host="db",
+    port="5432"
+)
+
+try:
+    with connection:
+        with connection.cursor() as cursor:
+            # Create table for the articles if it does not already exist
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS articles (
+                    id SERIAL PRIMARY KEY,
+                    title TEXT NOT NULL,
+                    embedding VECTOR NOT NULL
+                )
+            ''')
+            
+            # Insert merged results into the table
+            for result in merged_results:
+                cursor.execute('''
+                    INSERT INTO articles (title, embedding)
+                    VALUES (%s, %s)
+                ''', (result['title'], result['embedding'].tolist()))
+except Exception as e:
+    print(f"An database error occurred: {e}")
+finally:
+    connection.close()
+
+print('Results saved to database successfully.')
