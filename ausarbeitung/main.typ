@@ -113,7 +113,12 @@ Ein perfekter Chatbot mit optimaler RAG für die Textgenerierung würde viele fa
 
 Damit ergibt sich für den gesamten Datenfluss zum Einlesen von PDFs in die Vektordatenbank der in @rag-flow_import dargestellte Ablauf: Zunächst werden die PDF-Dateien, die manuell von arXiv heruntergeladen wurden, von einem Python-Skript eingelesen und Titel und Abstract der PDFs werden extrahiert. Das Embedding-Modell SPECTER bestimmt anhand von Titel und Abstract dann einen Vektor, der mit dem Titel und dem Abstract in der Vektordatenbank gespeichert wird. Um die Datenbankbelastung gering zu halten, wird das pdf-Dokument selbst in einem separaten Verzeichnis gespeichert und nur der relative Pfad in diesem Verzeichnis wird in der Datenbank abgelegt. Durch die Speicherung von Titel und Abstract in der Datenbank kann so auch bei einem Verlust des Dokumentenverzeichnisses das entsprechende Dokument im Internet recherchiert werden.
 
-#todo[Hier geht es weiter mit der Abfrage: Abfrage -> SPECTER -> Ähnlichkeitssuche in DB -> Ergebnisse ausgeben]
+#figure(
+  image("diagrams/RAG-Retrieval.png"),
+  caption: [Retrieval-Flow zum Abrufen von zu einer Nutzereingabe passenden PDFs]
+) <rag-flow_retrieval>
+
+Beim Abrufen von Dokumenten aus der Datenbank, dem Retrieval, funktioniert der Ablauf ähnlich, wie @rag-flow_retrieval zeigt: Die Nutzereingabe wird durch dasselbe Embedding-Modell wie die PDF-Dateien in einen Vektor umgewandelt. Daraufhin wird in der Vektordatenbank anhand des Anfragevektors eine Ähnlichkeitssuche nach passenden Dokumenten ausgeführt und die Ergebnisse werden dem Nutzer angezeigt.
 
 = Installation
 
@@ -171,7 +176,7 @@ Nach Abschluss der Installation kann mit der Arbeit am eigentlichen Programmentw
 
 Um die Datengrundlage für das Einlesen der Dokumente in die Datenbank zu bewerkstelligen, wurden 51 Preprints im PDF-Format von arXiv heruntergeladen. Da diese im Git-Repository hinterlegt werden, wurde darauf geachtet, dass die Größe eines Artikels 3.5 MB nicht überschreitet -- auch um den PDF-Parser von Python nicht zu überlasten. In einem produktiven Einsatz der Anwendung sollte es problemlos möglich sein, auch größere PDFs zu verarbeiten. Darüber hinaus wurden Preprints aus verschiedenen Kategorien (hauptsächlich Informatik, Astrophysik, Elektrotechnik und Wirtschaft) heruntergeladen, die sich thematisch teilweise drastisch unterscheiden, teilweise aber auch überschneiden. Die Preprints wurden unkatalogisiert und unter ihrem Download-Dateinamen (z. B. `2405.00695v1.pdf`) im Verzeichnis `arxiv-pdfs` abgelegt.
 
-== Vorbereiten der Daten auf den Import
+== Vorbereiten der Daten auf den Import <prepare-for-import>
 
 Zum Vorbereiten der zuvor gespeicherten Daten auf das Embedding müssen Titel und Abstract der Artikel ermittelt werden. Die naheliegendste Vorgehensweise dafür ist das Extrahieren dieser aus den PDF-Dateien. Um Text aus PDFs auszulesen, bietet Python unter anderem die Packages PyMuPDF und PDFPlumber, die jeweils unterschiedliche Herangehensweisen an die Textextraktion haben. Um beide zu vergleichen, wurde ein von ChatGPT erstelltes Python-Skript verwendet, das ein Abbild der jeweils ersten Dokumentseite und deren erkannten Textinhalt für alle Artikel in einem PDF-Bericht ausgibt.
 
@@ -201,7 +206,7 @@ Das Sichern der auf diese Weise erzeugten Embedding-Vektoren kann unter Einsatz 
 #figure(
   ```py
   connection = psycopg2.connect(
-    dbname="postgres",
+    dbname="postgres",  
     user="postgres",
     password="postgres",
     host="db",
@@ -213,15 +218,33 @@ Danach erstellt das Python-Skript eine Tabelle für die Artikel-Embeddings, sofe
 
 == Abrufen von Dokumentdaten aus der Vektordatenbank
 
-#todo[Text für Retrieval schreiben]
+Die in @prepare-for-import beschriebenen Probleme im Umgang mit PDFs sind beim Abrufen nicht relevant, daher kann hier der ursprünglich geplante Ablauf aus @rag-flow_retrieval problemlos umgesetzt werden. Zur Vereinfachung der Nutzung wird die RAG-Anfrage, also sozusagen der Prompt, direkt als Kommandozeilenparameter an das Python-Skript `rag-retrieval.py` übergeben. Dieser Prompt wird dann mit SPECTER in einen Vektor kodiert, das zeigt @query-encoding. Danach werden über die Ähnlichkeitssuche von pgVector die fünf Dokumente ermittelt, die am ehesten zur Nutzereingabe passen. Dafür wird das SQL-Skript in @sql-similarity-search durch `psycopg2` ausgeführt. Die Ähnlichkeitssuche wird durch den pgVector-Operator `<->` angewendet.
+
+#figure(
+  ```py
+query = sys.argv[1]
+# Embed query
+model = SentenceTransformer('sentence-transformers/allenai-specter')
+query_vector: ndarray = model.encode(query)
+  ```, caption: [Erzeugen eines Vektors aus der Nutzereingabe]) <query-encoding>
+
+#codly(highlights: ((line: 2, start: 2, end: none, fill: green, tag: [%s steht für den Suchvektor]), ))
+#figure(
+  ```sql
+SELECT title
+FROM articles
+ORDER BY embedding <-> %s::VECTOR  
+LIMIT 5;
+  ```, caption: [SQL-Statement für die Ähnlichkeitssuche in der Datenbank]
+) <sql-similarity-search>
 
 #figure(
   image("rag_retrieval_result.png"),
   caption: [Ergebnis des RAG-Retrieval-Skripts]
 ) <ergebnis_rag_retrieval>
 
-Die Ergebnisse des recht einfach gehaltenten Skripts können sich aber dennoch sehen lassen: @ergebnis_rag_retrieval zeigt die vom Skript gefundenen Dokumente für den Suchbegriff "Retrieval Augmented Generation in Data Warehouses". Die ersten vier Ergebnisse waren erwartbar, da sie alle RAG als Thema haben und auf der ersten Seite mehrfach nennen, aber der fünfte Preprint enthält weder den Begriff _Retrieval Augmented Generation_ noch _Data Warehouse_, ist aber -- wie das Skript bzw. das Embedding-Modell korrekt erkannt hat -- thematisch sehr ähnlich. Damit ist die Einsetzbarkeit des RAG-Workflows bewiesen, da von den Skripten aus der Preprint-Datenbank thematisch passende Artikel empfohlen werden, die teilweise über eine reine Wortsuche nicht auffindbar gewesen wären.
+Trotz des recht einfach gehaltenen Skripts können sich die Ergebnisse sehen lassen: @ergebnis_rag_retrieval zeigt einen beispielhaften Aufrug und die vom Skript gefundenen Dokumente für den Suchbegriff "Retrieval Augmented Generation in Data Warehouses". Die ersten vier Ergebnisse waren erwartbar, da sie alle RAG als Thema haben und auf der ersten Seite mehrfach nennen, aber der fünfte Preprint enthält weder das Schlagwort #text(lang: "en")[_Retrieval Augmented Generation_] noch _Data Warehouse_, ist aber -- wie das Skript bzw. das Embedding-Modell korrekt erkannt hat -- thematisch sehr ähnlich. Damit ist die Einsetzbarkeit des RAG-Workflows bewiesen, da von den Skripten aus der Preprint-Datenbank thematisch passende Artikel empfohlen werden, die teilweise über eine reine Wortsuche nicht auffindbar gewesen wären.
 
-= Character Count
+= Hinweis zur Verwendung von generativer KI
 
-In this document, there are #total-characters characters all up (w/o spaces). Therefore, there should be a maximum of 17 500 characters in this document (under the premise of an average word length of 8 chars).
+Aufgrund der geringen Erfahrung des Autors wurde generative KI eingesetzt, um bestimmte Sprachkonstrukte zu recherchieren. Außerdem wurde das Skript zum Testen der beiden PDF-Bibliotheken von ChatGPT erstellt, da es keinen direkten Bezug zum Thema der Arbeit hat und die Python-Kenntnisse des Autors nicht stark genug ausgeprägt sind, um ein solches Skript selbst zu erstellen. Für das Schreiben dieser Dokumentation keine generative KI eingesetzt. Bei der Erstellung der Skripte `rag-import.py` und `rag-retrieval.py` wurde generative KI nur beratend bei Python-Fragen eingesetzt.
