@@ -45,9 +45,9 @@
   date: datetime(year: 2024, month: 12, day: 19),
   date-format: "19. Dezember 2024", // Abgabedatum anstatt Format-String, weil sonst das Datum auf Englisch angezeigt werden würde (z. B. February)
   abstract: [
-    Dokumentation zum *Programmentwurf* in der\
-    Vorlesung *Data Warehouse*\
-    Kurs *TINF22B*\
+    Dokumentation zum Programmentwurf\
+    Data Warehouse\
+    Kurs TINF22B\
     DHBW Stuttgart
   ],
   bibliography: bibliography("zotero.bib"),
@@ -177,13 +177,50 @@ Zum Vorbereiten der zuvor gespeicherten Daten auf das Embedding müssen Titel un
 
 In den Berichten erkennt man Probleme bei beiden Packages:
 - PyMuPDF kommt mit spaltenweisen Layouts generell gut zurecht, kann aber dafür Ligaturen, wie z. B. LaTeX sie einsetzt, nicht erkennen.
-- PDFPlumber erkennt Ligaturen, aber kann spaltenweise Layouts nicht verarbeiten. Auch vertikaler Text (die arXiv-Wasserzeichen) sind problematisch. Dem ausgegebenen Text fehlen häufig Leerzeichen.
+- PDFPlumber erkennt Ligaturen, aber kann spaltenweise Layouts nicht korrekt verarbeiten. Auch vertikaler Text (v. a. die arXiv-Wasserzeichen) sind problematisch. Dem ausgegebenen Text fehlen häufig Leerzeichen.
 
-Neben diesen eher unvorteilhaften Ergebnissen bestehen noch weitere Probleme: Durch möglicherweise vorhandene Kopfzeilen und Zeilenumbrüche im Titel kann die genaue Position der Überschrift nicht ausreichend präzise bestimmt werden. Die Lokalisierung von Abstracts ist oft einfacher, weil sie häufig mit der Überschrift "Abstract" beginnen -- allerdings nicht zuverlässig. Zudem kann das Ende nicht exakt bestimmt werden, da die Folgekapitel keine einheitliche Benennung haben oder manchmal noch Stichworte für die Katalogisierung auf das Abstract folgen.
+Neben diesen eher unvorteilhaften Ergebnissen bestehen noch weitere Probleme: Durch möglicherweise vorhandene Kopfzeilen und Zeilenumbrüche im Titel kann die genaue Position der Überschrift nicht ausreichend präzise bestimmt werden. Die Lokalisierung von Abstracts ist oft einfacher, weil sie häufig mit der Überschrift "Abstract" beginnen -- allerdings kann auch das nicht vorausgesetzt werden. Zudem kann das Ende des Abstracts ebenfalls nicht exakt bestimmt werden, da die Folgekapitel keine einheitliche Benennung haben oder manchmal noch Stichworte für die Katalogisierung auf das Abstract folgen (oder ihm vorweg gehen).
+
+Aus diesen Gründen musste die ursprüngliche Strategie aus @rag-flow_import leicht abgeändert werden: Anstatt Titel und Abstract zu extrahieren und somit vorverarbeitet in das SPECTER-Modell zu geben, wird dem Modell der komplette Dokumentbeginn übergeben. Das geht zwar auf Kosten der Genauigkeit der finalen Embeddings, ist für den Rahmen der Aufgabenstellung allerdings durchaus angemessen. Alternativ müsste ein anderes Machine-Learning-Modell zunächst darauf trainiert werden, aus einer Vielzahl unterschiedlicher Formate jeweil Titel und Abstract zu extrahieren, was mit unverhältnismäßig viel Zeit und Aufwand verbunden wäre.
+
+Die Länge des übergebenen Textes richtet sich nach der maximalen Token-Länge von SPECTER, sie beträgt 512 Tokens #footnote[Kann mit Beispielcode aus @aarsen_computing_2024 bestimmt werden.]. Das entspricht etwa 300-400 englischen Wörtern @aarsen_computing_2024. Ein eigenes Experiment mit Blindtext in einer wissenschaftlichen Vorlage hat gezeigt, dass in etwa diese Menge an Text auch auf die erste Seite eines wissenschaftlichen Artikels passt. Daher soll dem Embedding-Modell der gesamte Text der ersten Seite übergeben. Es ist davon auszugehen, dass diese alle für das Embedding relevanten Informationen enthält. Sollte der dem Modell übergebene Text zu lang sein, wird er vor dem Embedding von der Sentence-Transformers-Bibliothek automatisch gekürzt @aarsen_computing_2024. Die Initialisierung des Modells und das Embedding der Textinhalte geht mit der Bibliothek allgemein sehr komfortabel, wie in @embedding_erzeugen ersichtlich ist.
+
+#figure(
+  ```py
+mod = SentenceTransformer('sentence-transformers/allenai-specter')
+# SentenceTransformer can encode multiple inputs at once if a List of strings is provided as input parameter.
+embeddings: ndarray = mod.encode(documents, show_progress_bar = True)
+```, caption: [Codeausschnitt zum Erzeugen von Vektoren aus einer String-Liste (`documents`)]
+) <embedding_erzeugen>
 
 == Import in die Vektordatenbank
 
+Das Sichern der auf diese Weise erzeugten Embedding-Vektoren kann unter Einsatz der Python-Bibliothek `psycopg2` durch einfache SQL-Statements vorgenommen werden. Für den Produktiveinsatz ist die implementierte Vorgehensweise nicht geeignet, da sie für SQL-Injection-Angriffe anfällig ist, allerdings bestehen für dieses Proof-of-Concept keine hohen Sicherheitsanforderungen. Als weitere Vereinfachung wird die Standard-Datenbank `postgres` verwendet, allerdings kann das in der Verbindungskonfiguration angepasst werden (s. @psycop_config). Die restlichen Konfigurationsdaten sind ebenfalls auf den in @dev-container-setup eingerichteten Dev-Container abgestimmt.
+
+#codly(highlights: ((line: 1, start: 7, end: none, fill: green, tag: "hier ggf. andere Datenbank eintragen"), ))
+#figure(
+  ```py
+  connection = psycopg2.connect(
+    dbname="postgres",
+    user="postgres",
+    password="postgres",
+    host="db",
+    port="5432"
+    ```, caption: [Konfiguration der Datenbankverbindung für `psycopg2`]
+) <psycop_config>
+
+Danach erstellt das Python-Skript eine Tabelle für die Artikel-Embeddings, sofern noch keine existiert, und speichert mit einem einfachen SQL-Insert den Dateinamen und den Vektor (im `pgvector`-Format `vector`) in der Datenbank ab.
+
 == Abrufen von Dokumentdaten aus der Vektordatenbank
+
+#todo[Text für Retrieval schreiben]
+
+#figure(
+  image("rag_retrieval_result.png"),
+  caption: [Ergebnis des RAG-Retrieval-Skripts]
+) <ergebnis_rag_retrieval>
+
+Die Ergebnisse des recht einfach gehaltenten Skripts können sich aber dennoch sehen lassen: @ergebnis_rag_retrieval zeigt die vom Skript gefundenen Dokumente für den Suchbegriff "Retrieval Augmented Generation in Data Warehouses". Die ersten vier Ergebnisse waren erwartbar, da sie alle RAG als Thema haben und auf der ersten Seite mehrfach nennen, aber der fünfte Preprint enthält weder den Begriff _Retrieval Augmented Generation_ noch _Data Warehouse_, ist aber -- wie das Skript bzw. das Embedding-Modell korrekt erkannt hat -- thematisch sehr ähnlich. Damit ist die Einsetzbarkeit des RAG-Workflows bewiesen, da von den Skripten aus der Preprint-Datenbank thematisch passende Artikel empfohlen werden, die teilweise über eine reine Wortsuche nicht auffindbar gewesen wären.
 
 = Character Count
 
