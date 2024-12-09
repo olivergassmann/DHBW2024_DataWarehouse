@@ -23,9 +23,17 @@ Der Programmentwurf besteht aus folgenden Dateien:
 Für den Programmentwurf sind neben den Testdaten im Ordner `arxiv_pdfs` noch die Skripte `rag_import.py` und
 `rag_retrieval.py` relevant.
 
-## Installation der benötigten Packages
+## Installation
 
-Um alle benötigten Packages zu installieren, kann der folgende Befehl ausgeführt werden:
+Nach dem Ausführen des DevContainers muss zunächst die pgVector-Erweiterung für PostgreSQL aktiviert werden. Dafür
+müssen folgende Befehle ausgeführt werden:
+```shell
+$ sudo apt update
+$ sudo apt install -y postgresql
+$ PGPASSWORD=postgres psql -h db -p 5432 -U postgres -d postgres -c "CREATE EXTENSION vector;"
+```
+
+Um alle benötigten Python-Packages zu installieren, kann der folgende Befehl ausgeführt werden:
 
 ```shell
 $ pip install -r ./requirements.txt
