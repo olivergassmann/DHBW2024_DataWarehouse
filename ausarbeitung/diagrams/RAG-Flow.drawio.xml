@@ -1,0 +1,112 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="Seite-1" id="eh7jZPO-vAaCTIac7rbb">
+    <mxGraphModel dx="754" dy="712" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-1" value="Titel und Abstract extrahieren" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Libertinus Serif;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="310" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-2" value="arXiv pdf" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fontFamily=Libertinus Serif;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="140" y="100" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-3" value="Embedding-Modell &lt;br&gt;SPECTER" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontFamily=Libertinus Serif;" parent="1" vertex="1">
+          <mxGeometry x="530" y="110" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-5" value="DB&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontFamily=Libertinus Serif;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="750" y="100" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-10" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" parent="1" source="nP3ZICuhKG0Z91j2FClM-1" target="nP3ZICuhKG0Z91j2FClM-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="250" as="sourcePoint" />
+            <mxPoint x="530" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-11" value="Titel, Abstract" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" parent="nP3ZICuhKG0Z91j2FClM-10" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-13" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" parent="1" source="nP3ZICuhKG0Z91j2FClM-2" target="nP3ZICuhKG0Z91j2FClM-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="210" y="139.63" as="sourcePoint" />
+            <mxPoint x="310" y="139.63" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-14" value="pdf-Datei" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" parent="nP3ZICuhKG0Z91j2FClM-13" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-15" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" parent="1" source="nP3ZICuhKG0Z91j2FClM-3" target="nP3ZICuhKG0Z91j2FClM-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="160" as="sourcePoint" />
+            <mxPoint x="550" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="nP3ZICuhKG0Z91j2FClM-16" value="Vektor, Titel,&lt;br&gt;Abstract,&lt;br&gt;Dateipfad" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" parent="nP3ZICuhKG0Z91j2FClM-15" connectable="0" vertex="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-1" value="&lt;h1&gt;Import Flow&lt;/h1&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="50" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-2" value="&lt;h1&gt;Retrieval Flow&lt;/h1&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="240" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-3" value="Embedding-Modell SPECTER" style="rounded=0;whiteSpace=wrap;html=1;fontFamily=Libertinus Serif;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="310" y="290" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-4" value="Nutzer-anfrage" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fontFamily=Libertinus Serif;fontSize=14;size=23;" vertex="1" parent="1">
+          <mxGeometry x="140" y="280" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-5" value="Ähnlichkeitssuche&lt;div&gt;&amp;nbsp;in Datenbank&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontFamily=Libertinus Serif;" vertex="1" parent="1">
+          <mxGeometry x="530" y="290" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="MEcFS3ug0Ksg5tjnfKcs-6" target="MEcFS3ug0Ksg5tjnfKcs-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-6" value="DB&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;br style=&quot;font-size: 14px;&quot;&gt;&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontFamily=Libertinus Serif;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="560" y="390" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-7" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" edge="1" parent="1" source="MEcFS3ug0Ksg5tjnfKcs-3" target="MEcFS3ug0Ksg5tjnfKcs-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="430" as="sourcePoint" />
+            <mxPoint x="530" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-8" value="Vektoren" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" connectable="0" vertex="1" parent="MEcFS3ug0Ksg5tjnfKcs-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-9" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" edge="1" parent="1" source="MEcFS3ug0Ksg5tjnfKcs-4" target="MEcFS3ug0Ksg5tjnfKcs-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="210" y="319.63" as="sourcePoint" />
+            <mxPoint x="310" y="319.63" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-10" value="String" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" connectable="0" vertex="1" parent="MEcFS3ug0Ksg5tjnfKcs-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-14" value="Ausgabe&lt;div&gt;an Nutzer&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fontFamily=Libertinus Serif;fontSize=14;size=23;" vertex="1" parent="1">
+          <mxGeometry x="745" y="280" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-15" value="" style="endArrow=classic;html=1;rounded=0;fontFamily=Libertinus Serif;" edge="1" parent="1" source="MEcFS3ug0Ksg5tjnfKcs-5" target="MEcFS3ug0Ksg5tjnfKcs-14">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="650" y="319.69" as="sourcePoint" />
+            <mxPoint x="750" y="319.69" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="MEcFS3ug0Ksg5tjnfKcs-16" value="Titel, Abstract,&lt;div&gt;Dateipfad&lt;/div&gt;" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;fontFamily=Libertinus Serif;" connectable="0" vertex="1" parent="MEcFS3ug0Ksg5tjnfKcs-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

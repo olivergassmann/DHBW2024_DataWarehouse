@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="645.44"
+   height="80"
+   viewBox="0 0 645.44 80"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath16">
+      <path
+         d="M 0,0 H 2016.0156 V 249.02344 H 0 Z"
+         clip-rule="evenodd"
+         id="path14" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath28">
+      <path
+         d="M 3.125,0 H 2012.5 V 249.02344 H 3.125 Z"
+         clip-rule="evenodd"
+         id="path26" />
+    </clipPath>
+  </defs>
+  <g
+     id="g8"
+     transform="matrix(0.31999998,0,0,0.31999998,0,2e-6)">
+    <g
+       id="g10">
+      <g
+         id="g12"
+         clip-path="url(#clipPath16)">
+        <g
+           id="g18"
+           transform="scale(3.125)">
+          <path
+             d="M 0,0 H 645 V 80 H 0 Z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path20" />
+        </g>
+      </g>
+    </g>
+    <g
+       id="g22">
+      <g
+         id="g24"
+         clip-path="url(#clipPath28)">
+        <g
+           id="g30"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 280,480 h 120 v 60 H 280 Z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path32" />
+          <path
+             d="m 280,480 h 120 v 60 H 280 Z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path34" />
+        </g>
+        <g
+           id="g36"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <text
+             xml:space="preserve"
+             transform="translate(289.6875,506)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text40"><tspan
+               x="0 8.0595703 11.949219 15.838867 22.052734 25.942383 29.442383 36.442383 43.442383 50.442383 53.169922 63.280273 70.280273 75.728516 79.618164 84.280273 90.494141 96.708008"
+               y="0"
+               id="tspan38">Titel und Abstract</tspan></text>
+          <text
+             xml:space="preserve"
+             transform="translate(308.51563,523)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text44"><tspan
+               x="0 6.2138672 13.213867 17.103516 21.765625 27.979492 34.979492 38.869141 45.083008 49.745117 55.958984"
+               y="0"
+               id="tspan42">extrahieren</tspan></text>
+        </g>
+        <g
+           id="g46"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 110,470 h 40 l 30,30 v 50 h -70 z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path48" />
+          <path
+             d="m 110,470 h 40 l 30,30 v 50 h -70 z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path50" />
+          <path
+             d="m 150,470 v 30 h 30 z"
+             style="fill:#000000;fill-opacity:0.05;fill-rule:nonzero;stroke:none"
+             id="path52" />
+          <path
+             d="m 150,470 v 30 h 30"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path54" />
+        </g>
+        <g
+           id="g56"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <text
+             xml:space="preserve"
+             transform="translate(117.96875,514)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text60"><tspan
+               x="0 6.2138672 10.875977 20.986328 24.875977 31.875977 35.375977 42.375977 49.375977"
+               y="0"
+               id="tspan58">arXiv pdf</tspan></text>
+        </g>
+        <g
+           id="g62"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 500,480 h 120 v 60 H 500 Z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path64" />
+          <path
+             d="m 500,480 h 120 v 60 H 500 Z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path66" />
+        </g>
+        <g
+           id="g68"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <text
+             xml:space="preserve"
+             transform="translate(505.17188,506)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text72"><tspan
+               x="0 8.5517578 19.441406 26.441406 32.655273 39.655273 46.655273 50.544922 57.544922 64.544922 69.207031 81.655273 88.655273 95.655273 101.86914 105.75879"
+               y="0"
+               id="tspan70">Embedding-Modell</tspan></text>
+          <text
+             xml:space="preserve"
+             transform="translate(530.04688,523)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text76"><tspan
+               x="0 7.7861328 15.572266 24.124023 33.461914 42.013672 50.56543"
+               y="0"
+               id="tspan74">SPECTER</tspan></text>
+        </g>
+        <g
+           id="g78"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 720,485 c 0,-8.28 13.42999,-15 30,-15 7.96002,0 15.59003,1.57999 21.21002,4.39001 C 776.84003,477.20999 780,481.01999 780,485 v 50 c 0,8.28003 -13.42999,15 -30,15 -16.57001,0 -30,-6.71997 -30,-15 z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path80" />
+          <path
+             d="m 720,485 c 0,-8.28 13.42999,-15 30,-15 7.96002,0 15.59003,1.57999 21.21002,4.39001 C 776.84003,477.20999 780,481.01999 780,485 v 50 c 0,8.28003 -13.42999,15 -30,15 -16.57001,0 -30,-6.71997 -30,-15 z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path82" />
+          <path
+             d="m 780,485 c 0,8.28 -13.42999,15 -30,15 -16.57001,0 -30,-6.72 -30,-15"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path84" />
+        </g>
+        <g
+           id="g86"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <text
+             xml:space="preserve"
+             transform="translate(740.26563,519)"
+             style="font-variant:normal;font-weight:normal;font-size:14px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text90"><tspan
+               x="0 10.110352"
+               y="0"
+               id="tspan88">DB</tspan></text>
+        </g>
+        <g
+           id="g92"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 400,510 h 93.63"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path94" />
+          <path
+             d="m 498.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path96" />
+          <path
+             d="m 498.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path98" />
+        </g>
+        <g
+           id="g100"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <path
+             d="m 420,497 h 63 v 13 h -63 z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path102" />
+          <text
+             xml:space="preserve"
+             transform="translate(420.23438,507)"
+             style="font-variant:normal;font-weight:normal;font-size:13px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text106"><tspan
+               x="0 6.3325195 9.3886719 12.444824 17.327148 20.383301 23.133301 25.276367 33.220215 38.720215 43.000977 46.057129 49.720215 54.602539 59.484863"
+               y="0"
+               id="tspan104">Titel, Abstract</tspan></text>
+        </g>
+        <g
+           id="g108"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 180,510 h 93.63"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path110" />
+          <path
+             d="m 278.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path112" />
+          <path
+             d="m 278.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path114" />
+        </g>
+        <g
+           id="g116"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <path
+             d="m 210,497 h 43 v 13 h -43 z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path118" />
+          <text
+             xml:space="preserve"
+             transform="translate(210.42188,507)"
+             style="font-variant:normal;font-weight:normal;font-size:13px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text122"><tspan
+               x="0 5.5 11 14.663086 18.326172 26.27002 31.152344 34.208496 39.09082"
+               y="0"
+               id="tspan120">pdf-Datei</tspan></text>
+        </g>
+        <g
+           id="g124"
+           transform="matrix(2.9811473,0,0,2.9811473,-318.51785,-1395.1768)">
+          <path
+             d="m 620,510 h 93.63"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path126" />
+          <path
+             d="m 718.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path128" />
+          <path
+             d="m 718.88,510 -7,3.5 1.75,-3.5 -1.75,-3.5 z"
+             style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+             id="path130" />
+        </g>
+        <g
+           id="g132"
+           transform="matrix(2.9811473,0,0,2.9811473,-320.00842,-1396.6674)">
+          <path
+             d="m 643,470 h 57 v 39 h -57 z"
+             style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="path134" />
+          <text
+             xml:space="preserve"
+             transform="translate(642.84375,480)"
+             style="font-variant:normal;font-weight:normal;font-size:13px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text138"><tspan
+               x="0 6.7246094 11.606934 17.106934 20.163086 25.663086 28.885742 31.635742 34.187012 40.519531 43.575684 46.631836 51.51416 54.570312"
+               y="0"
+               id="tspan136">Vektor, Titel,</tspan></text>
+          <text
+             xml:space="preserve"
+             transform="translate(651.5,493)"
+             style="font-variant:normal;font-weight:normal;font-size:13px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text142"><tspan
+               x="0 7.9438477 13.443848 17.724609 20.780762 24.443848 29.326172 34.208496 37.264648"
+               y="0"
+               id="tspan140">Abstract,</tspan></text>
+          <text
+             xml:space="preserve"
+             transform="translate(649.8125,506)"
+             style="font-variant:normal;font-weight:normal;font-size:13px;font-family:'Times New Roman';-inkscape-font-specification:TimesNewRomanPSMT;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             id="text146"><tspan
+               x="0 7.9438477 12.826172 15.882324 20.764648 23.820801 29.320801 32.983887 37.866211"
+               y="0"
+               id="tspan144">Dateipfad</tspan></text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
